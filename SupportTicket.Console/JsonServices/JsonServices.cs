@@ -1,5 +1,4 @@
-﻿using SupportTicket.Core.Interfaces;
-using SupportTicket.Core.Models;
+﻿using SupportTicket.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

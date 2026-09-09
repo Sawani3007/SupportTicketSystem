@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using SupportTicket.Core.DTOs;
+using SupportTicket.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,38 +19,10 @@ namespace SupportTicket.Infrastructure.AdoRepository
             _connectionString = configuration.GetConnectionString("DefaultString")!;
         }
 
-        public IEnumerable<TicketDetailsDto> GetAllTickets()
-        {
+        public IEnumerable<CustomerTicket> GetCustomerTicketDetails(int Id) {
             using (SqlConnection con = new SqlConnection(_connectionString))
             {
-                IEnumerable<TicketDetailsDto> ticketDetailsDtos = new List<TicketDetailsDto>();
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = "Select * From TicketDetails";
-                cmd.Connection = con;
-                con.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (!reader.Read())
-                {
-                    TicketDetailsDto ticketDetailsDto = new TicketDetailsDto
-                    {
-                        TicketId = Convert.ToInt32(reader["Id"]),
-                        Title = reader["Title"].ToString()!,
-                        Priority = Convert.ToInt32(reader["Priority"]),
-                        Status = Convert.ToInt32(reader["Status"]),
-                        CustomerName = reader["Name"].ToString()!,
-                        CreatedAt = Convert.ToDateTime(reader["CreatedAt"])
-                    };
-
-                }
-                return ticketDetailsDtos;
-                ;
-            }
-
-        }
-        public IEnumerable<CustomerTicketDto> GetCustomerTicketDetails(int Id) {
-            using (SqlConnection con = new SqlConnection(_connectionString))
-            {
-                IEnumerable<CustomerTicketDto> customerTicketDtos = new List<CustomerTicketDto>();
+                IEnumerable<CustomerTicket> CustomerTickets = new List<CustomerTicket>();
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = "GivenCustomerTicketDetails";
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -60,7 +32,7 @@ namespace SupportTicket.Infrastructure.AdoRepository
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (!reader.Read())
                 {
-                    CustomerTicketDto ticketDetailsDto = new CustomerTicketDto
+                    CustomerTicket ticketDetailsDto = new CustomerTicket
                     {
                         TicketId = Convert.ToInt32(reader["Id"]),
                         Title = reader["Title"].ToString()!,
@@ -69,7 +41,7 @@ namespace SupportTicket.Infrastructure.AdoRepository
                     };
 
                 }
-                return customerTicketDtos;
+                return CustomerTickets;
             }
         }
         public bool UpdateTicketStatus(int Id, int NewStatus)

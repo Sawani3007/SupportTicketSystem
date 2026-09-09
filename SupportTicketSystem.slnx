@@ -1,6 +1,8 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
   <Project Path="SupportTicket.Api/SupportTicket.Api.csproj" />
-  <Project Path="SupportTicket.Application/SupportTicket.Application.csproj" />
   <Project Path="SupportTicket.Console/SupportTicket.Console.csproj" />
   <Project Path="SupportTicket.Core/SupportTicket.Core.csproj" />
   <Project Path="SupportTicket.Infrastructure/SupportTicket.Infrastructure.csproj" />

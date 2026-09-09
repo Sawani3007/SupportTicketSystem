@@ -1,4 +1,4 @@
-﻿using SupportTicket.Core.DTOs;
+﻿using SupportTicket.Api.DTOs;
 using SupportTicket.Core.Enums;
 using SupportTicket.Core.Models;
 using SupportTicket.Infrastructure.AdoRepository;
@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupportTicket.Application.Services
+namespace SupportTicket.Api.Services
 {
     public class TicketServices:ITicketServices
     {
@@ -190,7 +190,7 @@ namespace SupportTicket.Application.Services
             _repo.Save();
         }
 
-        public IEnumerable<CustomerTicketDto> GetCustomerTicketDetails(int id)
+        public IEnumerable<CustomerTicket> GetCustomerTicketDetails(int id)
         {
             return _adoRepo.GetCustomerTicketDetails(id);
         }

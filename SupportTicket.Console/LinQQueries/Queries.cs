@@ -37,8 +37,8 @@ namespace SupportTicket.Core.LinQQueries
         public IEnumerable<CountTicketsByAgent> CountByAgent(IEnumerable<Ticket> tickets)
         {
             return tickets
-                .Where(t => t.AgentId.HasValue)
-                .GroupBy(t => t.AgentId.Value)
+                .Where(t => t.AgentId is not null)
+                .GroupBy(t => t.AgentId!.Value)
                 .Select(group => new CountTicketsByAgent
                 {
                     AgentId = group.Key,

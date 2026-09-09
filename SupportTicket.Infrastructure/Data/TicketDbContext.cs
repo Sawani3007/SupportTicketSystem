@@ -33,6 +33,10 @@ namespace SupportTicket.Infrastructure.Data
                       .IsRequired()
                       .HasMaxLength(150);
 
+                entity.Property(c => c.Phone)
+                      .IsRequired()
+                      .HasMaxLength(20);
+
                 entity.HasIndex(c => c.Email)
                       .IsUnique();
             });
@@ -54,6 +58,9 @@ namespace SupportTicket.Infrastructure.Data
                 entity.Property(a => a.Department)
                       .IsRequired()
                       .HasMaxLength(100);
+
+                entity.Property(a => a.IsActive)
+                      .HasDefaultValue(true);
 
                 entity.HasIndex(a => a.Email)
                       .IsUnique();

@@ -9,17 +9,18 @@ namespace SupportTicket.Infrastructure.EFRepository
 {
     public interface IEFRepo
     {
-        public IEnumerable<Ticket> GetAllTickets();
-        public Ticket? GetTicketById(int id);
-        public void AddTicket(Ticket ticket);
-        public void UpdateTicket(Ticket ticket);
-        public void DeleteTicket(Ticket ticket);
-        public IEnumerable<Customer> GetAllCustomers();
-        public Customer? GetCustomerById(int id);
-        public void AddCustomer(Customer customer);
-        public void UpdateCustomer(Customer customer);
-        public void DeleteCustomer(int id);
-        public void Save();
+          PagedResult<Ticket> GetAllTickets(int page, int pageSize);
+          Ticket? GetTicketById(int id);
+          void AddTicket(Ticket ticket);
+          void UpdateTicket(Ticket ticket);
+          void DeleteTicket(Ticket ticket);
+        IEnumerable<Customer> GetAllCustomers();
+          Customer? GetCustomerById(int id);
+          void AddCustomer(Customer customer);
+          void UpdateCustomer(Customer customer);
+          void DeleteCustomer(int id);
+          bool HasOpenTickets(int id);
+          void Save();
 
     }
 }

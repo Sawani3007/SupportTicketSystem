@@ -1,4 +1,4 @@
-﻿using SupportTicket.Core.DTOs;
+﻿using SupportTicket.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +9,7 @@ namespace SupportTicket.Infrastructure.AdoRepository
 {
     public interface IAdoRepo
     {
-        public IEnumerable<TicketDetailsDto> GetAllTickets();
-        public IEnumerable<CustomerTicketDto> GetCustomerTicketDetails(int Id);
+        public IEnumerable<CustomerTicket> GetCustomerTicketDetails(int Id);
         public bool UpdateTicketStatus(int Id, int NewStatus);
     }
 }

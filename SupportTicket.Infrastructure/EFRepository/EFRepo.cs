@@ -14,9 +14,22 @@ namespace SupportTicket.Infrastructure.EFRepository
         {
             _context = context;
         }
-        public IEnumerable<Ticket> GetAllTickets()
+        public PagedResult<Ticket> GetAllTickets(int page, int pageSize)
         {
-            return _context.Tickets.ToList();
+            var totalCount = _context.Tickets.Count();
+
+            var tickets = _context.Tickets
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return new PagedResult<Ticket>
+            {
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                Data = tickets
+            };
         }
 
         public Ticket? GetTicketById(int id)
@@ -62,9 +75,20 @@ namespace SupportTicket.Infrastructure.EFRepository
             _context.Customers.Update(customer);
         }
 
-        public void DeleteCustomer(Customer customer)
+        public void DeleteCustomer(int id)
         {
-            
+            var customer = _context.Customers.Find(id);
+
+            if (customer != null)
+            {
+                _context.Customers.Remove(customer);
+            }
+        }
+        public bool HasOpenTickets(int customerId)
+        {
+            return _context.Tickets
+                .Any(t =>t.CustomerId == customerId &&
+                    t.Status == TicketStatus.Open);
         }
         public void Save()
         {

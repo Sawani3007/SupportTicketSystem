@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using SupportTicket.Core.Models;
 using SupportTicket.Api.DTOs;
 
-namespace SupportTicket.Application.Services
+namespace SupportTicket.Api.Services
 {
     public interface ITicketServices
     {
@@ -22,7 +22,7 @@ namespace SupportTicket.Application.Services
           CustomerResponseDto? UpdateCustomer(CustomerUpdateDto customerUpdateDto, int id);
           bool DeleteCustomer(int id);
           void Save();
-          IEnumerable<CustomerTicketDto> GetCustomerTicketDetails(int id);
+          IEnumerable<CustomerTicket> GetCustomerTicketDetails(int id);
           bool UpdateTicketStatus(int id, int newStatus);
     }
 }

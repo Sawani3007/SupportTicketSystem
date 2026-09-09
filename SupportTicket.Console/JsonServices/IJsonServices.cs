@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SupportTicket.Core.Interfaces
+namespace SupportTicket.Core.JsonServices
 {
     public interface IJsonServices
     {
