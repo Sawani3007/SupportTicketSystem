@@ -1,17 +1,19 @@
-﻿using System;
+﻿using SupportTicket.Api.DTOs;
+using SupportTicket.Core.Enums;
+using SupportTicket.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using SupportTicket.Core.Models;
-using SupportTicket.Api.DTOs;
 
 namespace SupportTicket.Api.Services
 {
     public interface ITicketServices
     {
-          PagedResult<Ticket> GetAllTickets(int page, int pageSize);
+          PagedResult<Ticket> GetAllTickets(int page, int pageSize, string? search,
+          TicketStatus? status, TicketPriority? priority);
           TicketResponseDto? GetTicketById(int id);
           TicketResponseDto AddTicket(TicketCreateDto ticketCreateDto);
           TicketResponseDto? UpdateTicket(TicketUpdateDto ticketUpdateDto, int id);

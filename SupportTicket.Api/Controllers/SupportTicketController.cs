@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SupportTicket.Api.DTOs;
 using SupportTicket.Api.Services;
+using SupportTicket.Core.Enums;
 using SupportTicket.Core.Models;
 
 namespace SupportTicket.Api.Controllers
@@ -21,15 +22,24 @@ namespace SupportTicket.Api.Controllers
             _configuration = configuration;
         }
         [HttpGet]
-        public IActionResult GetAllTickets(int page = 1, int? pageSize = null)
+        public IActionResult GetAllTickets(int page = 1,int? pageSize = null,
+    string? search = null,TicketStatus? status = null,TicketPriority? priority = null)
         {
             int defaultPageSize = _configuration.GetValue<int>("DefaultPageSize");
             int actualPageSize = pageSize ?? defaultPageSize;
+
             if (page < 1 || actualPageSize < 1)
             {
                 return BadRequest("Page and pagesize must be greater than 0");
             }
-            var result = _service.GetAllTickets(page, actualPageSize);
+
+            var result = _service.GetAllTickets(
+                page,
+                actualPageSize,
+                search,
+                status,
+                priority);
+
             return Ok(result);
         }
         [HttpGet("{id}")]

@@ -3,6 +3,7 @@ using SupportTicket.Infrastructure.Data;
 using System.Collections.Generic;
 using SupportTicket.Core.Enums;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace SupportTicket.Infrastructure.EFRepository
 {
@@ -14,11 +15,30 @@ namespace SupportTicket.Infrastructure.EFRepository
         {
             _context = context;
         }
-        public PagedResult<Ticket> GetAllTickets(int page, int pageSize)
+        public PagedResult<Ticket> GetAllTickets(int page, int pageSize,string? search,
+          TicketStatus? status, TicketPriority? priority)
         {
-            var totalCount = _context.Tickets.Count();
-
-            var tickets = _context.Tickets
+            var query = _context.Tickets
+            .Include(t => t.Customer)
+            .Include(t => t.Agent)
+            .AsQueryable();
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(t =>
+                    t.Title.Contains(search) ||
+                    t.Description.Contains(search));
+            }
+            if (status.HasValue)
+            {
+                query = query.Where(t => t.Status == status.Value);
+            }
+            if (priority.HasValue)
+            {
+                query = query.Where(t => t.Priority == priority.Value);
+            }
+            var totalCount = query.Count();
+            var tickets = query
+                .OrderBy(t => t.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();

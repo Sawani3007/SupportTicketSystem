@@ -1,4 +1,5 @@
-﻿using SupportTicket.Core.Models;
+﻿using SupportTicket.Core.Enums;
+using SupportTicket.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace SupportTicket.Infrastructure.EFRepository
 {
     public interface IEFRepo
     {
-          PagedResult<Ticket> GetAllTickets(int page, int pageSize);
+          PagedResult<Ticket> GetAllTickets(int page, int pageSize , string? search
+          ,TicketStatus? status , TicketPriority? priority);
           Ticket? GetTicketById(int id);
           void AddTicket(Ticket ticket);
           void UpdateTicket(Ticket ticket);

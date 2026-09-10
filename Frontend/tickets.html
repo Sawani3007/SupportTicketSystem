@@ -21,11 +21,24 @@
     <p id="loadingMessage">Loading tickets...</p>
     <p id="errorMessage"></p>
 
-    <input
-        type="text"
-        id="searchInput"
-        placeholder="Search tickets..."
-    >
+    <input type="text"
+           id="searchInput"
+           placeholder="Search tickets...">
+    <select id="statusFilter">
+        <option value="">All Status</option>
+        <option value="0">Open</option>
+        <option value="1">In Progress</option>
+        <option value="2">Resolved</option>
+        <option value="3">Closed</option>
+    </select>
+
+    <select id="priorityFilter">
+        <option value="">All Priority</option>
+        <option value="0">Low</option>
+        <option value="1">Medium</option>
+        <option value="2">High</option>
+        <option value="3">Urgent</option>
+    </select>
 
     <br><br>
     <table>
@@ -42,32 +55,29 @@
             </tr>
         </thead>
         <tbody id="ticketTableBody">
-       
         </tbody>
     </table>
-
+    <div id="pagination">
+        <button id="previousBtn">Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextBtn">Next</button>
+    </div>
     <hr>
-    <h2>Add Ticket</h2>
+    <h2 id="formTitle">Add Ticket</h2>
 
     <form id="ticketForm">
-
         <label for="title">Title:</label>
-        <input
-            type="text"
-            id="title"
-            required
-        >
+        <input type="text"
+               id="title"
+               required>
         <br><br>
 
         <label for="description">Description:</label>
-        <textarea
-            id="description"
-            required
-        ></textarea>
+        <textarea id="description"
+                  required></textarea>
 
         <br><br>
         <label for="priority">Priority:</label>
-
         <select id="priority" required>
             <option value="">Select Priority</option>
             <option value="0">Low</option>
@@ -76,9 +86,7 @@
         </select>
 
         <br><br>
-
         <label for="status">Status:</label>
-
         <select id="status" required>
             <option value="">Select Status</option>
             <option value="0">Open</option>
@@ -86,34 +94,23 @@
             <option value="2">Resolved</option>
             <option value="3">Closed</option>
         </select>
-
         <br><br>
-
         <label for="customerId">Customer ID:</label>
-        <input
-            type="number"
-            id="customerId"
-            min="1"
-            required
-        >
+        <input type="number"
+               id="customerId"
+               min="1"
+               required>
         <br><br>
-
         <label for="agentId">Agent ID:</label>
-        <input
-            type="number"
-            id="agentId"
-            min="1"
-        >
+        <input type="number"
+               id="agentId"
+               min="1">
         <br><br>
 
-        <button type="submit">
-            Add Ticket
-        </button>
-
+        <button type="submit" id="submitButton">Add Ticket</button>
+        <button type="button" id="cancelEditButton" style="display: none;">Cancel Edit</button>
     </form>
-
     <script src="js/tickets.js"></script>
 
 </body>
-
 </html>

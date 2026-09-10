@@ -9,6 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddCors(options =>
+{ 
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        policy.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<TicketDbContext>(options =>
@@ -18,6 +28,7 @@ builder.Services.AddScoped<IEFRepo, EFRepo>();
 builder.Services.AddScoped<IAdoRepo, AdoRepo>();
 builder.Services.AddScoped<ITicketServices, TicketServices>();
 var app = builder.Build();
+app.UseCors("FrontendPolicy");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

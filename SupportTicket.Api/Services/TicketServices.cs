@@ -46,9 +46,10 @@ namespace SupportTicket.Api.Services
                 CreatedAt = customer.CreatedAt
             };
         }
-        public PagedResult<Ticket> GetAllTickets(int page, int pageSize)
+        public PagedResult<Ticket> GetAllTickets(int page,int pageSize, string? search,
+    TicketStatus? status,TicketPriority? priority)
         {
-            return _repo.GetAllTickets(page, pageSize);
+            return _repo.GetAllTickets(page,pageSize,search,status,priority);
         }
         public TicketResponseDto? GetTicketById(int id)
         {
