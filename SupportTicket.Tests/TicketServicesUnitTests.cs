@@ -99,7 +99,7 @@ public class TicketServicesUnitTests
         repo.HasOpenTicketsResult = false;
         var service = new TicketServices(repo, new FakeAdoRepo());
         var result = service.DeleteCustomer(1);
-        Assert.True(result);
+        Assert.Equal("Deleted", result);
         Assert.Empty(repo.Customers);
         Assert.Contains(1, repo.DeletedCustomerIds);
     }

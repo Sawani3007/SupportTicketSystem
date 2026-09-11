@@ -14,30 +14,22 @@ const searchInput = document.getElementById("searchInput");
 const statusFilter = document.getElementById("statusFilter");
 const priorityFilter = document.getElementById("priorityFilter");
 const ticketForm = document.getElementById("ticketForm");
-
 const submitButton = document.getElementById("submitButton");
 const cancelEditButton = document.getElementById("cancelEditButton");
 const formTitle = document.getElementById("formTitle");
-
 const previousButton = document.getElementById("previousBtn");
 const nextButton = document.getElementById("nextBtn");
 const pageInfo = document.getElementById("pageInfo");
-
 
 async function getTickets() {
 
     loadingMessage.textContent = "Loading tickets...";
     errorMessage.textContent = "";
-
     try {
-
         const params = new URLSearchParams();
-
         params.append("page", currentPage);
         params.append("pageSize", pageSize);
-
         const search = searchInput.value.trim();
-
         if (search !== "") {
             params.append("search", search);
         }
@@ -49,22 +41,15 @@ async function getTickets() {
         if (priorityFilter.value !== "") {
             params.append("priority", priorityFilter.value);
         }
-
         const response = await fetch(`${API_URL}?${params.toString()}`);
-
         if (!response.ok) {
             throw new Error(`Failed to fetch tickets. Status: ${response.status}`);
         }
-
         const result = await response.json();
-
         console.log("API Response:", result);
-
-        tickets = Array.isArray(result.data) ? result.data : [];
-
+        tickets = Array.isArray(result.data)? result.data.map(ticket => ticket): [];
         renderTickets(tickets);
         updatePagination(result);
-
         loadingMessage.textContent = "";
 
     } catch (error) {

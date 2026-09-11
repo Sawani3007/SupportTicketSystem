@@ -49,7 +49,8 @@ namespace SupportTicket.Core.LinQQueries
         {
             return tickets.FirstOrDefault(t=>t.Title.Equals(findTitle, StringComparison.OrdinalIgnoreCase));
         }
-        public bool? AnyHighPriorityOpenTicket(IEnumerable<Ticket> tickets) { 
+        public bool AnyHighPriorityOpenTicket(IEnumerable<Ticket> tickets)
+        { 
             return tickets.Any(t=>t.Priority == TicketPriority.High && t.Status == TicketStatus.Open);
         }
     }

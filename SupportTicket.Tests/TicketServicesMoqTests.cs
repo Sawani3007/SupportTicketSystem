@@ -78,13 +78,13 @@ public class TicketServicesMoqTests
             .Returns(true);
         var service = new TicketServices(repo.Object, adoRepo.Object);
         var result = service.DeleteCustomer(1);
-        Assert.False(result);
+        Assert.Equal("HasOpenTickets", result);
         repo.Verify(x => x.DeleteCustomer(It.IsAny<int>()), Times.Never);
         repo.Verify(x => x.Save(), Times.Never);
     }
 
     [Fact]
-    public void UpdateTicketStatus_WhenRepositoryFails_ReturnsFalse()
+    public void UpdateTicketStatus_WhenTicketIsClosed_ReturnsFalse()
     {
         var repo = new Mock<IEFRepo>();
         var adoRepo = new Mock<IAdoRepo>();
@@ -105,7 +105,7 @@ public class TicketServicesMoqTests
             .Returns((Customer?)null);
         var service = new TicketServices(repo.Object, adoRepo.Object);
         var result = service.DeleteCustomer(99);
-        Assert.False(result);
+        Assert.Equal("NotFound", result);
         repo.Verify(x => x.DeleteCustomer(It.IsAny<int>()), Times.Never);
         repo.Verify(x => x.Save(), Times.Never);
     }

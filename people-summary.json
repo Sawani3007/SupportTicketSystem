@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "Luke Skywalker",
+    "Height": "172"
+  },
+  {
+    "Name": "C-3PO",
+    "Height": "167"
+  },
+  {
+    "Name": "R2-D2",
+    "Height": "96"
+  },
+  {
+    "Name": "Darth Vader",
+    "Height": "202"
+  },
+  {
+    "Name": "Leia Organa",
+    "Height": "150"
+  }
+]

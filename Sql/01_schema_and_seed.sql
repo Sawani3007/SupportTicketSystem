@@ -1,28 +1,54 @@
 CREATE DATABASE SupportTicketDb;
 GO
+
 USE SupportTicketDb;
 GO
 
-CREATE TABLE Customers(Id int Identity(1,1) PRIMARY KEY , Name VARCHAR(50) Not Null , Email VARCHAR(30) Not Null Unique , Phone Varchar(12) Not Null,
-CreatedAt DATETIME2 Not Null DEFAULT GETDATE());
+CREATE TABLE Customers
+(
+    Id int Identity(1,1) PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Email VARCHAR(30) NOT NULL UNIQUE,
+    Phone VARCHAR(12) NOT NULL,
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETDATE()
+);
 GO
 
-CREATE TABLE Agents(Id int Identity(1,1) PRIMARY KEY , Name VARCHAR(50) Not Null , Email VARCHAR(30) Not Null Unique , IsActive BIT Not Null DEFAULT 1
-, CreatedAt DATETIME2 Not Null DEFAULT GETDATE());
-GO
-ALTER Table Agents Add Department Varchar(20) Not Null;
+CREATE TABLE Agents
+(
+    Id int Identity(1,1) PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Email VARCHAR(30) NOT NULL UNIQUE,
+    IsActive BIT NOT NULL DEFAULT 1,
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETDATE(),
+    Department VARCHAR(20) NOT NULL
+);
 GO
 
-CREATE TABLE Tickets(Id int Identity(1,2) Primary Key , Title VARCHAR(50) Not Null , Description VARCHAR(50) Not Null , Priority int Not Null 
-, Status int Not Null , CustomerId int , AgentId int Null , CreatedAt DATETIME2 Not Null DEFAULT GETDATE() , ClosedAt DATETIME2 Null ,
-FOREIGN KEY(CustomerId) REFERENCES Customers(Id) ,
-FOREIGN KEY(AgentId) REFERENCES Agents(Id));
+CREATE TABLE Tickets
+(
+    Id int Identity(1,1) PRIMARY KEY,
+    Title VARCHAR(50) NOT NULL,
+    Description VARCHAR(200) NOT NULL,
+    Priority int NOT NULL,
+    Status int NOT NULL,
+    CustomerId int NOT NULL,
+    AgentId int NULL,
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETDATE(),
+    ClosedAt DATETIME2 NULL,
+    FOREIGN KEY(CustomerId) REFERENCES Customers(Id),
+    FOREIGN KEY(AgentId) REFERENCES Agents(Id)
+);
 GO
 
-ALTER TABLE Tickets ALTER COLUMN Description VARCHAR(200);
-
-CREATE TABLE TicketsNotes(Id int Identity(1,1) PRIMARY KEY , TicketId int , NoteText VARCHAR(100) NOT NULL , CreatedAt DATETIME2 Not Null DEFAULT GETDATE()
-,FOREIGN KEY(TicketId) REFERENCES Tickets(Id));
+CREATE TABLE TicketNotes
+(
+    Id int Identity(1,1) PRIMARY KEY,
+    TicketId int NOT NULL,
+    NoteText VARCHAR(100) NOT NULL,
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETDATE(),
+    FOREIGN KEY(TicketId) REFERENCES Tickets(Id)
+);
 GO
 
 INSERT INTO Customers (Name, Email, Phone)
@@ -30,13 +56,14 @@ VALUES
 ('Rahul Sharma', 'rahul@gmail.com', '9876543210'),
 ('Priya Singh', 'priya@gmail.com', '9876543211'),
 ('Aman Verma', 'aman@gmail.com', '9876543212');
-
+GO
 
 INSERT INTO Agents (Name, Email, Department, IsActive)
 VALUES
 ('Siya Gomez', 'siya@support.com', 'Technical Support', 1),
 ('Ishika Saxena', 'Ishika@support.com', 'Technical Support', 1),
 ('Bhawana Srivastava', 'bhawana@support.com', 'Technical Support', 0);
+GO
 
 INSERT INTO Tickets
 (
@@ -60,7 +87,6 @@ VALUES
     '2026-09-01 09:00:00',
     NULL
 ),
-
 (
     'Login failed after password reset',
     'Customer still cannot login after resetting password.',
@@ -71,7 +97,6 @@ VALUES
     '2026-09-01 10:30:00',
     NULL
 ),
-
 (
     'Profile update not working',
     'Customer cannot update profile information.',
@@ -82,7 +107,6 @@ VALUES
     '2026-09-02 11:00:00',
     NULL
 ),
-
 (
     'Email notification delay',
     'Customer is receiving notifications late.',
@@ -93,7 +117,6 @@ VALUES
     '2026-09-02 12:00:00',
     NULL
 ),
-
 (
     'Payment processing error',
     'Payment fails while completing the transaction.',
@@ -104,7 +127,6 @@ VALUES
     '2026-09-03 09:30:00',
     NULL
 ),
-
 (
     'Application crash',
     'Application crashes when opening the dashboard.',
@@ -115,7 +137,6 @@ VALUES
     '2026-09-03 14:00:00',
     NULL
 ),
-
 (
     'Password reset request',
     'Customer requested help resetting password.',
@@ -126,7 +147,6 @@ VALUES
     '2026-09-04 10:00:00',
     '2026-09-05 16:00:00'
 ),
-
 (
     'Report download issue',
     'Customer could not download the monthly report.',
@@ -137,8 +157,9 @@ VALUES
     '2026-09-04 15:00:00',
     NULL
 );
+GO
 
-INSERT INTO TicketsNotes
+INSERT INTO TicketNotes
 (
     TicketId,
     NoteText,
@@ -166,11 +187,13 @@ VALUES
     '2026-09-03 11:00:00'
 ),
 (
-    10,
+    5,
     'Crash issue was identified and fixed.',
     '2026-09-04 10:00:00'
 );
+GO
+
 SELECT * FROM Customers;
 SELECT * FROM Agents;
-SELECT * FROM TicketsNotes;
 SELECT * FROM Tickets;
+SELECT * FROM TicketNotes;

@@ -32,6 +32,7 @@ namespace SupportTicket.Api.Services
                 Status = ticket.Status,
                 CustomerId = ticket.CustomerId,
                 AgentId = ticket.AgentId,
+                CreatedAt = ticket.CreatedAt,
                 ClosedAt = ticket.ClosedAt
             };
         }
@@ -46,19 +47,19 @@ namespace SupportTicket.Api.Services
                 CreatedAt = customer.CreatedAt
             };
         }
-        public PagedResult<Ticket> GetAllTickets(int page,int pageSize, string? search,
-    TicketStatus? status,TicketPriority? priority)
+        public PagedResult<TicketResponseDto> GetAllTickets(int page,int pageSize,string? search,TicketStatus? status,TicketPriority? priority)
         {
-            return _repo.GetAllTickets(page,pageSize,search,status,priority);
-        }
-        public TicketResponseDto? GetTicketById(int id)
-        {
-            var ticketById = _repo.GetTicketById(id);
-            if(ticketById == null)
+            var result = _repo.GetAllTickets(
+                page,pageSize,
+                search,status,priority);
+
+            return new PagedResult<TicketResponseDto>
             {
-                return null;
-            }
-            return MapToDto(ticketById);
+                Page = result.Page,
+                PageSize = result.PageSize,
+                TotalCount = result.TotalCount,
+                Data = result.Data.Select(MapToDto)
+            };
         }
         public TicketResponseDto AddTicket(TicketCreateDto ticketCreateDto)
         {
@@ -120,7 +121,6 @@ namespace SupportTicket.Api.Services
                 return false;
             }
             _repo.DeleteTicket(ticket);
-            _repo.UpdateTicket(ticket);
             _repo.Save();
             return true;
 
@@ -139,6 +139,15 @@ namespace SupportTicket.Api.Services
                 return null;
             }
             return MapToDtoCustomer(customer);
+        }
+        public TicketResponseDto? GetTicketById(int id)
+        {
+            var ticket = _repo.GetTicketById(id);
+
+            if (ticket == null)
+                return null;
+
+            return MapToDto(ticket);
         }
         public CustomerResponseDto AddCustomer(CustomerCreateDto customerCreateDto)
         {
@@ -171,29 +180,37 @@ namespace SupportTicket.Api.Services
             _repo.Save();
             return MapToDtoCustomer(customer);
         }
-        public bool DeleteCustomer(int id)
+        public string DeleteCustomer(int id)
         {
             var customer = _repo.GetCustomerById(id);
+
             if (customer == null)
-            {
-                return false;
-            }
+                return "NotFound";
+
             if (_repo.HasOpenTickets(id))
-            {
-                return false;
-            }
+                return "HasOpenTickets";
+
             _repo.DeleteCustomer(id);
             _repo.Save();
-            return true;
+
+            return "Deleted";
         }
         public void Save()
         {
             _repo.Save();
         }
 
-        public IEnumerable<CustomerTicket> GetCustomerTicketDetails(int id)
+        public IEnumerable<CustomerTicketResponseDto> GetCustomerTicketDetails(int id)
         {
-            return _adoRepo.GetCustomerTicketDetails(id);
+            var tickets = _adoRepo.GetCustomerTicketDetails(id);
+
+            return tickets.Select(t => new CustomerTicketResponseDto
+            {
+                TicketId = t.TicketId,
+                Title = t.Title,
+                Priority = t.Priority,
+                Status = t.Status
+            });
         }
 
         public bool UpdateTicketStatus(int id, int newStatus)

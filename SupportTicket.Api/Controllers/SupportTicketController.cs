@@ -107,17 +107,18 @@ namespace SupportTicket.Api.Controllers
         [HttpPatch("{id}/status")]
         public IActionResult UpdateTicketStatus(int id, int newStatus)
         {
+            if (!Enum.IsDefined(typeof(TicketStatus), newStatus))
+            {
+                return BadRequest("Invalid ticket status.");
+            }
             _logger.LogInformation(
                 "Updating status for ticket {TicketId}.",
                 id);
-
             var result = _service.UpdateTicketStatus(id, newStatus);
-
             if (!result)
             {
                 return BadRequest("Ticket status could not be updated.");
             }
-
             return NoContent();
         }
 

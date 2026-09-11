@@ -84,23 +84,27 @@ namespace SupportTicket.Api.Controllers
         public IActionResult DeleteCustomer(int id)
         {
             _logger.LogInformation("Deleting customer with ID {CustomerId}.", id);
-
             var result = _service.DeleteCustomer(id);
-
-            if (!result)
+            if (result == "NotFound")
             {
                 _logger.LogWarning(
-                    "Customer with ID {CustomerId} could not be deleted because they have open tickets or do not exist.",
+                    "Customer with ID {CustomerId} was not found.",
                     id);
 
+                return NotFound();
+            }
+
+            if (result == "HasOpenTickets")
+            {
+                _logger.LogWarning(
+                    "Customer with ID {CustomerId} cannot be deleted because they have open tickets.",
+                    id);
                 return BadRequest(
                     "Customer cannot be deleted because they have open tickets.");
             }
-
             _logger.LogInformation(
                 "Customer with ID {CustomerId} deleted successfully.",
                 id);
-
             return NoContent();
         }
     }

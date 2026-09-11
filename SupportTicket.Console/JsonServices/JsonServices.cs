@@ -23,7 +23,8 @@ namespace SupportTicket.Core.JsonServices
                 var response = await _client.GetAsync(url);
                 response.EnsureSuccessStatusCode();
                 var json = await response.Content.ReadAsStringAsync();
-                var data = JsonSerializer.Deserialize<PersonResponse>(json);
+                var data = JsonSerializer.Deserialize<PersonResponse>(json,new JsonSerializerOptions
+                { PropertyNameCaseInsensitive = true});
                 if (data == null)
                 {
                     throw new Exception("Unable to read the Api Response");

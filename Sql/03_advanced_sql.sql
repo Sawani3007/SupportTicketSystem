@@ -13,7 +13,6 @@ GO
 
 SELECT * FROM TicketDetails;
 GO
-/*2. A stored procedure that returns tickets for a given customer id*/
 
 CREATE PROCEDURE GivenCustomerTicketDetails 
 @CustomerId int
@@ -26,25 +25,27 @@ GO
 EXEC GivenCustomerTicketDetails 3;
 GO
 
-/*A stored procedure that updates ticket status and rejects the change if the ticket is already Closed. Use parameters only.*/
-
 CREATE PROCEDURE UpdatingTicketStatus
-@TicketId int,
-@NewStatus int
-As BEGIN
-BEGIN TRANSACTION
-IF EXISTS (SELECT 1 FROM Tickets WHERE Id = @TicketId AND Status = 3)
-BEGIN 
-	ROLLBACK TRANSACTION
-	PRINT 'Ticket is already Closed. Status cannot be updated';
-END
-ELSE 
-BEGIN 
-	UPDATE Tickets SET Status = @NewStatus WHERE Id = @TicketId ;
-	PRINT 'Ticket Status is Updated';
-	COMMIT TRANSACTION;
-END
+    @TicketId int,
+    @NewStatus int
+AS
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM Tickets
+        WHERE Id = @TicketId
+          AND Status = 3
+    )
+    BEGIN
+        PRINT 'Ticket is already Closed. Status cannot be updated';
+        RETURN;
+    END
+
+    UPDATE Tickets
+    SET Status = @NewStatus
+    WHERE Id = @TicketId;
 END
 GO
 
-EXEC UpdatingTicketStatus @TicketId = 5 , @NewStatus = 2;
+EXEC UpdatingTicketStatus @TicketId = 5, @NewStatus = 2;
+GO

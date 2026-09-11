@@ -27,15 +27,15 @@ namespace SupportTicket.Infrastructure.Data
 
                 entity.Property(c => c.Name)
                       .IsRequired()
-                      .HasMaxLength(100);
+                      .HasMaxLength(50);
 
                 entity.Property(c => c.Email)
                       .IsRequired()
-                      .HasMaxLength(150);
+                      .HasMaxLength(30);
 
                 entity.Property(c => c.Phone)
                       .IsRequired()
-                      .HasMaxLength(20);
+                      .HasMaxLength(12);
 
                 entity.HasIndex(c => c.Email)
                       .IsUnique();
@@ -49,15 +49,15 @@ namespace SupportTicket.Infrastructure.Data
 
                 entity.Property(a => a.Name)
                       .IsRequired()
-                      .HasMaxLength(100);
+                      .HasMaxLength(50);
 
                 entity.Property(a => a.Email)
                       .IsRequired()
-                      .HasMaxLength(150);
+                      .HasMaxLength(30);
 
                 entity.Property(a => a.Department)
                       .IsRequired()
-                      .HasMaxLength(100);
+                      .HasMaxLength(20);
 
                 entity.Property(a => a.IsActive)
                       .HasDefaultValue(true);
@@ -74,10 +74,11 @@ namespace SupportTicket.Infrastructure.Data
 
                 entity.Property(t => t.Title)
                       .IsRequired()
-                      .HasMaxLength(200);
+                      .HasMaxLength(50);
 
                 entity.Property(t => t.Description)
-                      .IsRequired();
+                      .IsRequired()
+                      .HasMaxLength(200);
 
                 entity.HasOne(t => t.Customer)
                       .WithMany(c => c.Tickets)
@@ -102,7 +103,7 @@ namespace SupportTicket.Infrastructure.Data
 
                 entity.Property(n => n.NoteText)
                       .IsRequired()
-                      .HasMaxLength(500);
+                      .HasMaxLength(100);
 
                 entity.HasOne(n => n.Ticket)
                       .WithMany(t => t.TicketNotes)

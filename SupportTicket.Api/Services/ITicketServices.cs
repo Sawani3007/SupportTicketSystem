@@ -12,8 +12,7 @@ namespace SupportTicket.Api.Services
 {
     public interface ITicketServices
     {
-          PagedResult<Ticket> GetAllTickets(int page, int pageSize, string? search,
-          TicketStatus? status, TicketPriority? priority);
+        PagedResult<TicketResponseDto> GetAllTickets(int page, int pageSize, string? search, TicketStatus? status, TicketPriority? priority);
           TicketResponseDto? GetTicketById(int id);
           TicketResponseDto AddTicket(TicketCreateDto ticketCreateDto);
           TicketResponseDto? UpdateTicket(TicketUpdateDto ticketUpdateDto, int id);
@@ -22,9 +21,9 @@ namespace SupportTicket.Api.Services
           CustomerResponseDto? GetCustomerById(int id);
           CustomerResponseDto AddCustomer(CustomerCreateDto customerCreateDto);
           CustomerResponseDto? UpdateCustomer(CustomerUpdateDto customerUpdateDto, int id);
-          bool DeleteCustomer(int id);
+          string DeleteCustomer(int id);
           void Save();
-          IEnumerable<CustomerTicket> GetCustomerTicketDetails(int id);
+          IEnumerable<CustomerTicketResponseDto> GetCustomerTicketDetails(int id);
           bool UpdateTicketStatus(int id, int newStatus);
     }
 }

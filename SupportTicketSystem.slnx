@@ -6,4 +6,5 @@
   <Project Path="SupportTicket.Console/SupportTicket.Console.csproj" />
   <Project Path="SupportTicket.Core/SupportTicket.Core.csproj" />
   <Project Path="SupportTicket.Infrastructure/SupportTicket.Infrastructure.csproj" />
+  <Project Path="SupportTicket.Tests/SupportTicket.Tests.csproj" Id="76f59394-c0c9-49ca-b8da-073cb4b859a0" />
 </Solution>
