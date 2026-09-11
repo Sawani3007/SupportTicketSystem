@@ -61,13 +61,12 @@ public class TicketServicesMoqTests
     }
 
     [Fact]
-    public void DeleteCustomer_WhenCustomerHasOpenTickets_DoesNotDelete()
+    public void DeleteCustomer_WhenCustomerDoesNotExist_ReturnsNotFound()
     {
         var repo = new Mock<IEFRepo>();
         var adoRepo = new Mock<IAdoRepo>();
         repo.Setup(x => x.GetCustomerById(1))
             .Returns(new Customer
-            {
                 Id = 1,
                 Name = "Atarah",
                 Email = "atarah@example.com",

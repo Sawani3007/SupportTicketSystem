@@ -22,8 +22,6 @@ WHERE CustomerId = @CustomerId
 END;
 GO
 
-EXEC GivenCustomerTicketDetails 3;
-GO
 
 CREATE PROCEDURE UpdatingTicketStatus
     @TicketId int,
@@ -47,5 +45,3 @@ BEGIN
 END
 GO
 
-EXEC UpdatingTicketStatus @TicketId = 5, @NewStatus = 2;
-GO
