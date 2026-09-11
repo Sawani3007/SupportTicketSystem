@@ -27,19 +27,19 @@ namespace SupportTicket.Api.Controllers
         {
             int defaultPageSize = _configuration.GetValue<int>("DefaultPageSize");
             int actualPageSize = pageSize ?? defaultPageSize;
-
             if (page < 1 || actualPageSize < 1)
             {
                 return BadRequest("Page and pagesize must be greater than 0");
             }
-
+            _logger.LogInformation(
+                "Fetching tickets. Page: {Page}, PageSize: {PageSize}.",page,
+            actualPageSize);
             var result = _service.GetAllTickets(
                 page,
                 actualPageSize,
                 search,
                 status,
                 priority);
-
             return Ok(result);
         }
         [HttpGet("{id}")]
@@ -49,7 +49,8 @@ namespace SupportTicket.Api.Controllers
             _logger.LogInformation("Fetching tickets information from Id {Id}", id);
             if (result == null)
             {
-                return NotFound("Ticket with Id not found.");
+                _logger.LogWarning("Ticket with ID {TicketId} was not found.",id);
+                return NotFound($"Ticket with Id {id} not found.");
             }
             return Ok(result);
         }
@@ -57,8 +58,7 @@ namespace SupportTicket.Api.Controllers
         public IActionResult AddTicket(TicketCreateDto dto)
         {
             var ticket = _service.AddTicket(dto);
-            _logger.LogInformation("Adding ticket:");
-
+            _logger.LogInformation("Adding ticket with title {Title}.",dto.Title);
             return CreatedAtAction(
                 nameof(GetTicketById),
                 new { id = ticket.Id },
@@ -67,8 +67,14 @@ namespace SupportTicket.Api.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateTicket(TicketUpdateDto dto,int id)
         {
+            _logger.LogInformation("Updating ticket with ID {TicketId}.",id);
             var ticket = _service.UpdateTicket(dto, id);
-            _logger.LogInformation("Updating the ticket with Id{Id}", id);
+            if (ticket == null)
+            {
+                _logger.LogWarning(
+                    "Ticket with ID {TicketId} was not found.",id);
+                return NotFound("Ticket not found.");
+            }
             return Ok(ticket);
         }
         [HttpDelete("{id}")]
